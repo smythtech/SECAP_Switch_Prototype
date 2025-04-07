@@ -213,8 +213,8 @@ control firewall_control(inout headers_t hdr,
       } else if(hdr.ethernet.isValid()) {
 
             // Disable LLDP check
-            //vetting_over.read(vetting_over_val, (bit<32>)standard_metadata.ingress_port);
-            vetting_over_val = 0;
+            vetting_over.read(vetting_over_val, (bit<32>)standard_metadata.ingress_port);
+            //vetting_over_val = 0;
 
             if(vetting_over_val == 0) {
 
@@ -343,9 +343,9 @@ control firewall_control(inout headers_t hdr,
       if(violation_detected == 0) {
             firewall.apply();
       } else {
-            //local_metadata.violation = 1;
-            //hdr.packet_out.setInvalid();
-            //drop();
+            local_metadata.violation = 1;
+            hdr.packet_out.setInvalid();
+            drop();
             firewall.apply();
       }
     }
